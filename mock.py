@@ -1,57 +1,83 @@
 import random
 
-def generate_mock_open_rate(subject_line, factors):
-    # Base open rate
-    open_rate = 0.2
+def generate_mock_ctr(subject_line, factors, audience):
+    base_ctr = 0.02  # 2% base click-through rate
 
-    # Count the number of active factors
+    age = audience.split()[1]
+    gender = audience.split()[0]
+
+    # Adjust base CTR for age and gender
+    if age == "18-30":
+        base_ctr *= 1.2
+    elif age == "50+":
+        base_ctr *= 0.8
+
+    if gender == "Female":
+        base_ctr *= 1.1
+
+    # Count active factors
     active_factors = sum(factors.values())
 
     # Adjust based on factors
     if factors['personalization']:
-        open_rate += 0.05
-    if factors['joining_fees']:
-        open_rate += 0.03
-    if factors['cashback']:
-        open_rate += 0.04
-    if factors['first_year_free']:
-        open_rate += 0.06
-    if factors['urgency']:
-        open_rate += 0.02
+        if gender == "Female" or age == "50+":
+            base_ctr *= 1.3
+        else:
+            base_ctr *= 1.1
 
-    # Penalize for too many factors
-    if active_factors > 3:
-        open_rate -= 0.05 * (active_factors - 3)
+    if factors['joining_fees']:
+        if age == "50+" or (gender == "Female" and age == "30-50"):
+            base_ctr *= 1.2
+        elif age == "18-30":
+            base_ctr *= 0.9
+        else:
+            base_ctr *= 1.1
+
+    if factors['cashback']:
+        if age == "18-30":
+            base_ctr *= 1.3
+        elif age == "50+":
+            base_ctr *= 1.1
+        else:
+            base_ctr *= 1.2
+
+    if factors['first_year_free']:
+        if age == "30-50":
+            base_ctr *= 1.3
+        else:
+            base_ctr *= 1.2
+
+    if factors['urgency']:
+        if age == "18-30":
+            base_ctr *= 1.2
+        elif age == "50+":
+            base_ctr *= 0.9  # Negative impact for older segment
+        else:
+            base_ctr *= 1.1
+
+    # Penalize for more than 3 factors, except for Female 30-50
+    if active_factors > 3 and not (gender == "Female" and age == "30-50"):
+        base_ctr *= 0.9 ** (active_factors - 3)
+
+    # Specific negative impacts
+    if gender == "Male" and age == "50+" and factors['urgency']:
+        base_ctr *= 0.85  # Strong negative impact of urgency on older males
+
+    if gender == "Female" and age == "18-30" and factors['joining_fees']:
+        base_ctr *= 0.95  # Slight negative impact of mentioning joining fees for young females
 
     # Penalize for long subject lines
     words = subject_line.split()
     if len(words) > 10:
-        open_rate -= 0.02 * (len(words) - 10)
+        base_ctr *= 0.95 ** (len(words) - 10)
 
     # Add some randomness
-    open_rate += random.uniform(-0.05, 0.05)
+    base_ctr *= random.uniform(0.9, 1.1)
 
-    # Ensure open_rate is between 0 and 1
-    open_rate = max(0, min(1, open_rate))
+    # Ensure CTR is between 0 and 1
+    return max(0, min(1, base_ctr))
 
-    return open_rate
-
-def simulate_email_opens(subject_line, factors, num_emails=1000):
-    open_rate = generate_mock_open_rate(subject_line, factors)
-    opens = sum(random.random() < open_rate for _ in range(num_emails))
-    return opens, num_emails
-
-# Example usage
-if __name__ == "__main__":
-    test_subject = "Get cashback and free first year! Limited time offer!"
-    test_factors = {
-        'personalization': 0,
-        'joining_fees': 0,
-        'cashback': 1,
-        'first_year_free': 1,
-        'urgency': 1
-    }
-    opens, total = simulate_email_opens(test_subject, test_factors)
-    print(f"Subject: {test_subject}")
-    print(f"Factors: {test_factors}")
-    print(f"Opens: {opens}/{total} ({opens/total:.2%})")
+def simulate_email_campaign(subject_line, factors, audience, num_emails):
+    ctr = generate_mock_ctr(subject_line, factors, audience)
+    clicks = int(num_emails * ctr)
+    return clicks, num_emails
