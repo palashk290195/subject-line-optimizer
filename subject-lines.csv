@@ -1,0 +1,33 @@
+subject_line,personalization,joining_fees,cashback,first_year_free,urgency
+Exclusive food rewards await,0,0,0,0,0
+Limited time offer: Foodie's dream card,0,0,0,0,1
+Enjoy cashback on your favorite meals,0,0,1,0,0
+Last chance: Get cashback on all orders,0,0,1,0,1
+A full year of delicious perks,0,0,0,1,0
+Hurry: Free first year offer ending soon,0,0,0,1,1
+Free year plus cashback on all orders,0,0,1,1,0
+Final hours: Free year and cashback deal,0,0,1,1,1
+No joining fee: Start saving today,0,1,0,0,0
+Act fast: Zero join fee offer ending,0,1,0,0,1
+"Zero fee, 10% back on all orders",0,1,1,0,0
+"Last day: No fee, high cashback card",0,1,1,0,1
+No fee and free year of rewards,0,1,0,1,0
+"Ending soon: No fee, free year card",0,1,0,1,1
+"Triple treat: No fee, free year, cashback",0,1,1,1,0
+Final call: Our best card offer ever,0,1,1,1,1
+"[Name], unlock exclusive food rewards",1,0,0,0,0
+"[Name], quick: Foodie's dream card here",1,0,0,0,1
+"[Name], earn cashback on favorite meals",1,0,1,0,0
+"[Name], hours left: New cashback card",1,0,1,0,1
+"[Name], your year of delicious perks",1,0,0,1,0
+"[Name], last chance for a free year",1,0,0,1,1
+"[Name], free year plus order cashback",1,0,1,1,0
+"[Name], ending soon: Free year + cashback",1,0,1,1,1
+"[Name], no fee to start saving today",1,1,0,0,0
+"[Name], hurry: Zero join fee ending",1,1,0,0,1
+"[Name], no fee, 10% back on orders",1,1,1,0,0
+"[Name], last chance: No fee, high cashback",1,1,1,0,1
+"[Name], no fee and free reward year",1,1,0,1,0
+"[Name], ending: No fee, free year card",1,1,0,1,1
+"[Name], triple joy: No fee, year, cashback",1,1,1,1,0
+"[Name], final hours for best card deal",1,1,1,1,1
